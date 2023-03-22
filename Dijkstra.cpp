@@ -1,3 +1,4 @@
+
 ///Bismillahir Rahmanir Rahim
 //ShzFahad
 #include<bits/stdc++.h>
@@ -57,11 +58,11 @@ void dij(ll q)
         for(ll i=0;i<v[n].size();i++)
         {
             ll x = d+v[n][i].ss;
-            ll child = v[n][i].ff;
-            if(x<dis[child])
+
+            if(x<dis[v[n][i].ff])
             {
-                dis[child]=x;
-                s.insert({dis[child],child});
+                dis[v[n][i].ff]=x;
+                s.insert({dis[v[n][i].ff],v[n][i].ff});
             }
         }
     }
@@ -82,7 +83,6 @@ int main()
         ll x,y,z;
         cin >> x >> y >> z;
         v[x].pb({y,z});
-        v[y].pb({x,z});  ///Undirected
 
     }
     dij(1);

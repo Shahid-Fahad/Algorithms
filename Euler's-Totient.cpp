@@ -1,91 +1,114 @@
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <algorithm>
-#include <cmath>
-#include <vector>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <queue>
-#include <ctime>
-#include <cassert>
-#include <complex>
-#include <string>
-#include <cstring>
-#include <chrono>
-#include <random>
-#include <bitset>
+
+///Bismillahir Rahmanir Rahim
+//ShzFahad
+#include<bits/stdc++.h>
 using namespace std;
-
-#ifdef LOCAL
-#define eprintf(...) fprintf(stderr, __VA_ARGS__);fflush(stderr);
-#else
-#define eprintf(...) 42
-#endif
-
-using ll = long long;
-using ld = long double;
-using uint = unsigned int;
-using ull = unsigned long long;
-template<typename T>
-using pair2 = pair<T, T>;
-using pii = pair<int, int>;
-using pli = pair<ll, int>;
-using pll = pair<ll, ll>;
-mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
-ll myRand(ll B)
-{
-    return (ull)rng() % B;
-}
-
+#define ll long long int
+#define ld long double
+#define pll pair<ll,ll>
+#define vp vector<pair<ll,ll>>
 #define pb push_back
-#define mp make_pair
-#define all(x) (x).begin(),(x).end()
-#define fi first
-#define se second
+#define ff first
+#define ss second
+#define case_(tc) cout << "Case " << tc << ": ";
+#define mem(a,b) memset(a,b,sizeof(a))
+#define all(qz) qz.begin(),qz.end()
+#define rall(qz) qz.rbegin(),qz.rend()
 
-clock_t startTime;
-double getCurrentTime()
+#define pi acos(-1.0)
+#define tani(a) atan(a)/(pi/180)
+#define sini(a) asin(a)/(pi/180)
+#define cosi(a) cos(a)/(pi/180)
+#define cos(a)  cos(a*pi/180)
+#define sin(a)  sin(a*pi/180)
+#define tan(a)  tan(a*pi/180)
+const ll mod=1e9+7;
+
+#define YES cout << "YES" << endl;
+#define NO cout << "NO" << endl;
+#define dbg cout << "EKHANE" << endl;
+
+ll Pow(ll c,ll d){return d==0? 1:c*pow(c,d-1);}
+ll gcd(ll a,ll b) {return b==0? a:gcd(b,a%b);}
+ll lcm(ll a,ll b) {return ((a*b)/gcd(a,b));}
+
+ll egcd(ll a,ll b,ll &x,ll &y){if(b==0){x=1;y=0;return a;}ll x1,y1;ll gcd=egcd(b,a%b,x1,y1);x=y1;y=x1-y1*(a/b);return gcd;}
+ll bigMod(ll a,ll b){a%=mod;ll res=1;while(b>0){if(b&1)res=(res*a)%mod;a=(a*a)%mod;b>>=1;}return res;}
+
+inline ll MOD(ll a){ return (a%mod + mod) %mod ; }
+inline ll modAdd(ll a,ll b){ return MOD( MOD(a) + MOD(b) ) ; }
+inline ll modSub(ll a,ll b){ return MOD( MOD(a) - MOD(b) ) ; }
+inline ll modMul(ll a,ll b){ return MOD( MOD(a) * MOD(b) ) ; }
+inline ll modInv(ll a){ return bigMod(a,mod-2) ; }
+
+//ll dx[] = {-1, 0, 1, 0};
+//ll dy[] = {0, 1, 0, -1};,
+//ll dx[]={1,1,1,0,0,-1,-1,-1};
+//ll dy[]={1,0,-1,1,-1,1,0,-1};
+vector<long long int>prime;
+bool mark[1000006];
+void sieve(ll n)
 {
-    return (double)(clock() - startTime) / CLOCKS_PER_SEC;
+    ll i,j;
+    prime.clear();
+    mark[0]=true;
+    mark[1]=true;
+    mark[2]=false;
+    prime.push_back(2);
+    for(i=4; i<=n; i+=2)
+        mark[i]=true;
+    ll sqrtn = sqrt(n);
+    for(i=3; i<=sqrtn; i=i+2)
+    {
+        if(mark[i]==false)
+        {
+            for(j=i*i; j<=n; j+=2*i)
+                mark[j]=true;
+        }
+    }
+    for(ll i=3;i<=n;i=i+2)
+        if(mark[i]==false)
+        prime.push_back(i);
+
 }
 
-const int N = 100100;
-int n;
-int a[N];
-int pos[N];
-
-void solve()
+ll etf(ll n)
 {
-    scanf("%d", &n);
-    for (int i = 0; i < n; i++)
+    ll ans=n;
+    ll sq = sqrt(n);
+    for(ll i=0;i<prime.size()&&prime[i]<=sq;i++)
     {
-        scanf("%d", &a[i]);
-        pos[a[i]] = i;
+        ll p = prime[i];
+        if(n%p==0)
+        {
+            while(n%p==0)
+            {
+                n = n/p;
+            }
+            ans = ans/p;
+            ans = ans * (p-1);
+            sq = sqrt(n);
+        }
     }
-    int r = n;
-    for (int x = n; x > 0; x--)
+    if(n!=1)
     {
-        cout << "TEST " << pos[x] << " " << r << endl;
-        if (pos[x] >= r) continue;
-        for (int i = pos[x]; i < r; i++)
-            printf("%d ", a[i]);
-        r = pos[x];
+        ans = ans/n;
+        ans = ans*(n-1);
     }
-    printf("\n");
+    return ans;
 }
 
 int main()
 {
-    startTime = clock();
-//	freopen("input.txt", "r", stdin);
-//	freopen("output.txt", "w", stdout);
-
-    int t;
-    scanf("%d", &t);
-    while(t--) solve();
-
-    return 0;
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    ll t=1;
+    //cin >> t;
+    sieve(1000000);
+    while(t--)
+    {
+        ll n;
+        cin >> n;
+        cout << etf(n) << endl;
+    }
 }

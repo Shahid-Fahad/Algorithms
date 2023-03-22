@@ -1,11 +1,10 @@
-
 ///ShzFahad
 #include<bits/stdc++.h>
 using namespace std;
 #define ll long long int
 #define ld long double
-vector<long long int>prime;
-bool mark[1000001];
+vector<ll>prime;
+bool mark[10000005];
 void sieve(ll n)
 {
     ll i,j;
@@ -16,20 +15,18 @@ void sieve(ll n)
     prime.push_back(2);
     for(i=4; i<=n; i+=2)
         mark[i]=true;
-    ll sqrtn = sqrt(n);
-    for(i=3; i<=sqrtn; i=i+2)
+    for(i=3; i<=n; i=i+2)
     {
         if(mark[i]==false)
         {
-            for(j=i*i; j<=n; j+=2*i)
+            prime.push_back(i);
+            for(j=i*i; j<=n; j=j+i)
                 mark[j]=true;
         }
     }
-    for(ll i=3;i<=n;i=i+2)
-        if(mark[i]==false)
-        prime.push_back(i);
 
 }
+vector<ll> segprime;
 vector<ll> segsieve(ll l, ll r)
 {
 
@@ -40,7 +37,7 @@ vector<ll> segsieve(ll l, ll r)
         isprime[i]=true;
     if(l==1)
         isprime[0]=false;
-    for(i=0; prime[i]*prime[i]<=r; i++)
+    for(i=0;prime[i]*prime[i]<=r&&i<prime.size(); i++)
     {
         ll cp = prime[i];
         ll base = (l/cp)*cp;
@@ -60,38 +57,19 @@ vector<ll> segsieve(ll l, ll r)
 }
 int main()
 {
-    //ios_base::sync_with_stdio(false);
-    // cin.tie(NULL);
-    sieve(1000000);
+    ios_base::sync_with_stdio(false);
+     cin.tie(NULL);
+    sieve(10000005);
+    
     ll l,r,i;
     while(cin >> l >> r)
     {
-        vector<ll> segprime;
-        segprime = segsieve(l,r);
-        ll Min=1000000000000,Max=0,p,p1,p2,p3,p4;
-        if(segprime.size()<2)
-            cout << "There are no adjacent primes." << endl;
-        else
+        segprime=segsieve(l,r);
+        for(auto it :segprime)
         {
-            for(i=0; i<segprime.size()-1; i++)
-            {
-                p = segprime[i+1]-segprime[i];
-                if(p<Min)
-                {
-                    Min=p;
-                    p1=segprime[i];
-                    p2=segprime[i+1];
-                }
-                if(p>Max)
-                {
-                    Max=p;
-                    p3=segprime[i];
-                    p4=segprime[i+1];
-                }
-
-            }
-            printf("%lld,%lld are closest, %lld,%lld are most distant.\n",p1,p2,p3,p4);
+            cout << it << " ";
         }
+        cout << endl;
 
     }
 }
